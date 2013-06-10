@@ -38,6 +38,19 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 	UIView *view = UnityGetGLViewController().view;
 	webView = [[UIWebView alloc] initWithFrame:view.frame];
+    webView.opaque = NO;
+    webView.backgroundColor = [UIColor clearColor];
+    for (UIView* subView in [webView subviews])
+    {
+        if ([subView isKindOfClass:[UIScrollView class]]) {
+            for (UIView* shadowView in [subView subviews])
+            {
+                if ([shadowView isKindOfClass:[UIImageView class]]) {
+                    [shadowView setHidden:YES];
+                }
+            }
+        }
+    }
 	webView.delegate = self;
 	webView.hidden = YES;
 	[view addSubview:webView];
@@ -113,7 +126,7 @@ extern "C" {
 	void _WebViewPlugin_SetVisibility(void *instance, BOOL visibility);
 	void _WebViewPlugin_LoadURL(void *instance, const char *url);
 	void _WebViewPlugin_EvaluateJS(void *instance, const char *url);
-    char *_WebViewPluginPollMessage();
+    const char *_WebViewPluginPollMessage();
 }
 
 static WebViewPlugin *wvInstance;
@@ -156,15 +169,13 @@ void _WebViewPlugin_EvaluateJS(void *instance, const char *js)
 	[webViewPlugin evaluateJS:js];
 }
 
-char *_WebViewPluginPollMessage() {
+const char *_WebViewPluginPollMessage() {
     // Try to retrieve a message from the message queue in JavaScript context.
     NSString *message = [wvInstance stringByEvaluatingJS:@"unityWebMediatorInstance.pollMessage()"];
     
     if (message && message.length > 0) {
         NSLog(@"UnityWebViewPlugin: %@", message);
-        char* memory = static_cast<char*>(malloc(strlen(message.UTF8String) + 1));
-        if (memory) strcpy(memory, message.UTF8String);
-        return memory;
+        return [message UTF8String];
     } else {
         return NULL;
     }

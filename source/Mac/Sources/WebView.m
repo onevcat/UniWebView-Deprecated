@@ -279,7 +279,7 @@ void _WebViewPlugin_Update(void *instance, int x, int y, float deltaY,
 	BOOL buttonDown, BOOL buttonPress, BOOL buttonRelease,
 	BOOL keyPress, unsigned char keyCode, const char *keyChars, int textureId);
 void UnityRenderEvent(int eventID);
-char *_WebViewPluginPollMessage();
+const char *_WebViewPluginPollMessage();
 }
 
 static NSMutableSet *pool;
@@ -352,15 +352,13 @@ void UnityRenderEvent(int eventID)
 	}
 }
 
-char *_WebViewPluginPollMessage() {
+const char *_WebViewPluginPollMessage() {
     // Try to retrieve a message from the message queue in JavaScript context.
     NSString *message = [wvInstance stringByEvaluatingJS:@"unityWebMediatorInstance.pollMessage()"];
     
     if (message && message.length > 0) {
         NSLog(@"UnityWebViewPlugin: %@", message);
-        char* memory = static_cast<char*>(malloc(strlen(message.UTF8String) + 1));
-        if (memory) strcpy(memory, message.UTF8String);
-        return memory;
+        return [message UTF8String];
     } else {
         return NULL;
     }
