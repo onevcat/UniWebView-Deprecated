@@ -196,11 +196,13 @@ public class WebViewObject : MonoBehaviour {
 		_WebViewPlugin_EvaluateJS(webView, js);
 	}
 
-	public void CallFromJS(string message)
+	public void CallFromJS(string message) {
+		//if (callback != null)
+		//	callback(message);
+	}
+
+	private void LoadComplete(string message)
 	{
-		if (Application.platform != RuntimePlatform.OSXEditor) {
-			return;
-		}
 		if (callback != null)
 			callback(message);
 	}
@@ -343,6 +345,12 @@ public class WebViewObject : MonoBehaviour {
 	}
 
 	public void CallFromJS(string message) {
+		//if (callback != null)
+		//	callback(message);
+	}
+
+	private void LoadComplete(string message)
+	{
 		if (callback != null)
 			callback(message);
 	}
@@ -372,7 +380,7 @@ public class WebViewObject : MonoBehaviour {
 	public void Init(Callback cb = null) {
 		callback = cb;
 		// offset = new Vector2(0, 0);
-		webView = new AndroidJavaObject("net.gree.unitywebview.WebViewPlugin");
+		webView = new AndroidJavaObject("com.kayac.unitywebview.WebViewPlugin");
 		webView.Call("Init", name);
 	}
 
@@ -427,6 +435,12 @@ public class WebViewObject : MonoBehaviour {
 	}
 
 	public void CallFromJS(string message) {
+		//if (callback != null)
+		//	callback(message);
+	}
+
+	private void LoadComplete(string message)
+	{
 		if (callback != null)
 			callback(message);
 	}
