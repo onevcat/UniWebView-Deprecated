@@ -116,6 +116,11 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
     return [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+	UnitySendMessage("WebController","webViewDidFinishLoad");
+}
+
 @end
 
 extern "C" {
