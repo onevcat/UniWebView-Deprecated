@@ -117,7 +117,12 @@ public class WebViewPlugin
         	// AddProgressBar(a);
         	// SetProgressLayout(a);
 
-        	mWebView.setWebChromeClient(new WebChromeClient());
+        	mWebView.setWebViewClient(new WebViewClient() {
+        		@Override
+			    public void onPageFinished(WebView view, String url) {
+			        UnityPlayer.UnitySendMessage(gameObject, "LoadComplete", "");
+			    }
+			});
         	// mWebView.setWebChromeClient(new WebChromeClient() {
          //    	public void onProgressChanged(WebView view, int progress) {
          //        	if (progress < 100) {

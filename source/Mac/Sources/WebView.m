@@ -110,6 +110,7 @@ static void UnitySendMessage(
 	webView.hidden = YES;
 	[webView setAutoresizingMask:(NSViewWidthSizable|NSViewHeightSizable)];
 	[webView setPolicyDelegate:self];
+    [webView setFrameLoadDelegate:self];
 	gameObject = [[NSString stringWithUTF8String:gameObject_] retain];
 
 	return self;
@@ -133,6 +134,13 @@ static void UnitySendMessage(
 	} else {
 		[listener use];
 	}
+}
+
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
+{
+    if (sender == webView && frame == [webView mainFrame]) {
+        UnitySendMessage([gameObject UTF8String], "LoadComplete", "");
+    }
 }
 
 - (void)setRect:(int)width height:(int)height
