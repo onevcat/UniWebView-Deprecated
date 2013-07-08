@@ -120,7 +120,12 @@ public class WebViewPlugin
         	mWebView.setWebViewClient(new WebViewClient() {
         		@Override
 			    public void onPageFinished(WebView view, String url) {
-			        UnityPlayer.UnitySendMessage(gameObject, "LoadComplete", "");
+			        UnityPlayer.UnitySendMessage(gameObject, "LoadComplete", "1");
+			    }
+
+			    @Override
+			    public void onReceivedError (WebView view, int errorCode, String description, String failingUrl) {
+			        UnityPlayer.UnitySendMessage(gameObject, "LoadComplete", "0");
 			    }
 			});
         	// mWebView.setWebChromeClient(new WebChromeClient() {
