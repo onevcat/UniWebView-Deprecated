@@ -136,10 +136,24 @@ static void UnitySendMessage(
 	}
 }
 
+- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame
+{
+    if (sender == webView && frame == [webView mainFrame]) {
+        UnitySendMessage([gameObject UTF8String], "LoadComplete", "0");
+    }
+}
+
+- (void)webView:(WebView *)sender didFailProvisionalLoadWithError:(NSError *)error forFrame:(WebFrame *)frame
+{
+    if (sender == webView && frame == [webView mainFrame]) {
+        UnitySendMessage([gameObject UTF8String], "LoadComplete", "0");
+    }
+}
+
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
     if (sender == webView && frame == [webView mainFrame]) {
-        UnitySendMessage([gameObject UTF8String], "LoadComplete", "");
+        UnitySendMessage([gameObject UTF8String], "LoadComplete", "1");
     }
 }
 

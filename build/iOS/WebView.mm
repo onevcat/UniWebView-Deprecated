@@ -1,5 +1,5 @@
 /*
- * @onevcat 2012.01.15
+ * @onevcat Make it compatible with Kayac's webview version 2013.01.15
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the authors be held liable for any damages
@@ -38,6 +38,19 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 	UIView *view = UnityGetGLViewController().view;
 	webView = [[UIWebView alloc] initWithFrame:view.frame];
+    webView.opaque = NO;
+    webView.backgroundColor = [UIColor clearColor];
+    for (UIView* subView in [webView subviews])
+    {
+        if ([subView isKindOfClass:[UIScrollView class]]) {
+            for (UIView* shadowView in [subView subviews])
+            {
+                if ([shadowView isKindOfClass:[UIImageView class]]) {
+                    [shadowView setHidden:YES];
+                }
+            }
+        }
+    }
 	webView.delegate = self;
 	webView.hidden = YES;
 	[view addSubview:webView];
@@ -103,6 +116,16 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
     return [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+	UnitySendMessage([gameObjectName UTF8String], "LoadComplete", "1");
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+	UnitySendMessage([gameObjectName UTF8String], "LoadComplete", "0");
+}
+
 @end
 
 extern "C" {
@@ -113,7 +136,7 @@ extern "C" {
 	void _WebViewPlugin_SetVisibility(void *instance, BOOL visibility);
 	void _WebViewPlugin_LoadURL(void *instance, const char *url);
 	void _WebViewPlugin_EvaluateJS(void *instance, const char *url);
-    char *_WebViewPluginPollMessage();
+    const char *_WebViewPluginPollMessage();
 }
 
 static WebViewPlugin *wvInstance;
@@ -156,15 +179,13 @@ void _WebViewPlugin_EvaluateJS(void *instance, const char *js)
 	[webViewPlugin evaluateJS:js];
 }
 
-char *_WebViewPluginPollMessage() {
+const char *_WebViewPluginPollMessage() {
     // Try to retrieve a message from the message queue in JavaScript context.
     NSString *message = [wvInstance stringByEvaluatingJS:@"unityWebMediatorInstance.pollMessage()"];
     
     if (message && message.length > 0) {
         NSLog(@"UnityWebViewPlugin: %@", message);
-        char* memory = static_cast<char*>(malloc(strlen(message.UTF8String) + 1));
-        if (memory) strcpy(memory, message.UTF8String);
-        return memory;
+        return [message UTF8String];
     } else {
         return NULL;
     }

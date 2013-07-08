@@ -23,7 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using Callback = System.Action<string>;
+using Callback = System.Action<bool>;
 
 public class WebViewObjectMessage {
     public string path;      // Message path
@@ -204,7 +204,7 @@ public class WebViewObject : MonoBehaviour {
 	private void LoadComplete(string message)
 	{
 		if (callback != null)
-			callback(message);
+			callback(string.Equals(message, "1"));
 	}
 
 	void Update()
@@ -352,7 +352,7 @@ public class WebViewObject : MonoBehaviour {
 	private void LoadComplete(string message)
 	{
 		if (callback != null)
-			callback(message);
+			callback(string.Equals(message, "1"));
 	}
 }
 #elif UNITY_ANDROID
@@ -442,7 +442,7 @@ public class WebViewObject : MonoBehaviour {
 	private void LoadComplete(string message)
 	{
 		if (callback != null)
-			callback(message);
+			callback(string.Equals(message, "1"));
 	}
 }
 #endif

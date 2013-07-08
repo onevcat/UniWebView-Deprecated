@@ -16,8 +16,13 @@ public class WebViewTest : MonoBehaviour {
 	void Start()
 	{
 		// webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
-		WebViewObject.Instance.Init((msg)=>{
-			Debug.Log(string.Format("CallFromJS[{0}]", msg));
+		WebViewObject.Instance.Init((loadSuc)=>{
+			if (loadSuc) {
+				Debug.Log("Load Completed");
+			} else {
+				Debug.Log("Load Failed");
+			}
+			
 		});
 	}
 	

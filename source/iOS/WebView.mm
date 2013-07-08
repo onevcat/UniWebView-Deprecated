@@ -118,7 +118,12 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-	UnitySendMessage("WebController","webViewDidFinishLoad");
+	UnitySendMessage([gameObjectName UTF8String], "LoadComplete", "1");
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+	UnitySendMessage([gameObjectName UTF8String], "LoadComplete", "0");
 }
 
 @end
