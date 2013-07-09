@@ -42,13 +42,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import java.util.concurrent.SynchronousQueue;
-import android.graphics.drawable.ClipDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 
 class WebViewPluginInterface
 {
@@ -89,13 +83,6 @@ public class WebViewPlugin
 
 	private static FrameLayout layout = null;
 	private WebView mWebView;
-	private ProgressBar mProgress;      // Progress bar
-
-	private long mDownTime;
-
-	// public WebViewPlugin()
-	// {
-	// }
 
 	private Resources res = null;
 	private String name = null;
@@ -114,9 +101,8 @@ public class WebViewPlugin
         	mJSInterface = new JSInterface();
         	mWebView.addJavascriptInterface(mJSInterface, "UnityInterface");
 
-        	// AddProgressBar(a);
-        	// SetProgressLayout(a);
 
+        	mWebView.setWebChromeClient(new WebChromeClient());
         	mWebView.setWebViewClient(new WebViewClient() {
         		@Override
 			    public void onPageFinished(WebView view, String url) {
@@ -128,17 +114,6 @@ public class WebViewPlugin
 			        UnityPlayer.UnitySendMessage(gameObject, "LoadComplete", "0");
 			    }
 			});
-        	// mWebView.setWebChromeClient(new WebChromeClient() {
-         //    	public void onProgressChanged(WebView view, int progress) {
-         //        	if (progress < 100) {
-         //           		mProgress.setVisibility(View.VISIBLE);
-         //            	mProgress.setProgress(progress);
-         //        	} else {
-         //            	mProgress.setProgress(0);
-         //        	}
-         //    	}
-        	// }
-        	// );
         
 		}});
 	}
@@ -179,25 +154,6 @@ public class WebViewPlugin
         mWebView.setVerticalScrollbarOverlay(true);
 	}
 
-	private void AddProgressBar(Activity a) {
-		mProgress = new ProgressBar(a, null, android.R.attr.progressBarStyleHorizontal);
-		if (layout == null) {
-			layout = new FrameLayout(a);
-			a.addContentView(layout, new LayoutParams(LayoutParams.FILL_PARENT, 
-				LayoutParams.FILL_PARENT));
-			layout.setFocusable(true);
-			layout.setFocusableInTouchMode(true);
-		}
-        layout.addView(mProgress, new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT, 5));
-        mProgress.setMax(100);
-        mProgress.setVisibility(View.GONE);
-	}
-
-	private void SetProgressLayout(Activity a) {
-		SetLayoutParams(a);
-		SetProgressDetail(a);
-	}
-
 	private void SetLayoutParams(Activity a) {
 		// String name = getPackageName();
 		// FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, 50, Gravity.NO_GRAVITY);
@@ -216,29 +172,6 @@ public class WebViewPlugin
         	params.bottomMargin= 0;
         	params.gravity = Gravity.LEFT | Gravity.BOTTOM;
         }
-        mProgress.setLayoutParams(params);
-	}
-
-	private void SetProgressDetail (Activity a) {
-		// Resources res = getResources();
-		// String name = getPackageName();
-		// Define a shape with rounded corners
-        final float[] roundedCorners = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
-        ShapeDrawable pgDrawable = new ShapeDrawable(new RoundRectShape(roundedCorners, null, null));
-
-        // Sets the progressBar color
-        String myColor = "#00C0FF";
-        pgDrawable.getPaint().setColor(Color.parseColor(myColor));
-
-        // Adds the drawable to your progressBar
-        ClipDrawable progressD = new ClipDrawable(pgDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
-        mProgress.setProgressDrawable(progressD);
-
-        // Sets a background to have the 3D effect
-        // mProgress.setBackgroundDrawable(res.getDrawable(android.R.drawable.progress_horizontal));
-        // mProgress.getBackground().setColorFilter( 0x87888800, Mode.MULTIPLY);
-        Drawable drawable = mProgress.getProgressDrawable();
-		drawable.setColorFilter(new LightingColorFilter(0xFF000000, 0xFF5ea618));
 	}
 
 	public void Destroy()
