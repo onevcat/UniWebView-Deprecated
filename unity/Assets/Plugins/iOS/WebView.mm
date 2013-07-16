@@ -128,6 +128,18 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 @end
 
+// Helper method to create C string copy
+char* MakeCString(NSString *str)
+{
+    const char* string = [str UTF8String];
+	if (string == NULL)
+		return NULL;
+	
+	char* res = (char*)malloc(strlen(string) + 1);
+	strcpy(res, string);
+	return res;
+}
+
 extern "C" {
 	void *_WebViewPlugin_Init(const char *gameObjectName);
 	void _WebViewPlugin_Destroy(void *instance);
@@ -185,7 +197,7 @@ const char *_WebViewPluginPollMessage() {
     
     if (message && message.length > 0) {
         NSLog(@"UnityWebViewPlugin: %@", message);
-        return [message UTF8String];
+        return MakeCString(message);
     } else {
         return NULL;
     }
