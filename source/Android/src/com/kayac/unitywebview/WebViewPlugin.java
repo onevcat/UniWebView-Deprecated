@@ -43,6 +43,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import java.util.concurrent.SynchronousQueue;
 import android.graphics.PorterDuff.Mode;
+import android.webkit.JavascriptInterface;
 
 class WebViewPluginInterface
 {
@@ -63,12 +64,7 @@ public class WebViewPlugin
 {
 	// JavaScript interface class for embedded WebView.
     private class JSInterface {
-        public SynchronousQueue<String> mMessageQueue;
-
-        JSInterface() {
-            mMessageQueue = new SynchronousQueue<String>();
-        }
-
+    	@JavascriptInterface
         public void pushMessage(String message) {
             Log.d("WebView", message);
             try {
@@ -76,6 +72,12 @@ public class WebViewPlugin
             } catch (java.lang.InterruptedException e) {
                 Log.d("WebView", "Queueing error - " + e.getMessage());
             }
+        }
+
+        public SynchronousQueue<String> mMessageQueue;
+
+        JSInterface() {
+            mMessageQueue = new SynchronousQueue<String>();
         }
     }
 

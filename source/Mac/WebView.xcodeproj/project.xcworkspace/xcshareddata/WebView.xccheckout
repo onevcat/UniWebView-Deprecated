@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>27A51626-CB38-46A1-93FB-BFB6F4B02005</string>
+	<key>IDESourceControlProjectName</key>
+	<string>WebView</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6B709CA7-2CD8-4534-BC70-5139A27A7B83</key>
+		<string>ssh://github.com/onevcat/UniWebView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>source/Mac/WebView.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6B709CA7-2CD8-4534-BC70-5139A27A7B83</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/onevcat/UniWebView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6B709CA7-2CD8-4534-BC70-5139A27A7B83</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6B709CA7-2CD8-4534-BC70-5139A27A7B83</string>
+			<key>IDESourceControlWCCName</key>
+			<string>UniWebView</string>
+		</dict>
+	</array>
+</dict>
+</plist>
